@@ -1,6 +1,7 @@
-import { ClerkLoaded, ClerkProvider } from "@clerk/clerk-expo";
-import { Slot, Stack } from "expo-router";
+import { ClerkProvider, useAuth } from "@clerk/clerk-expo";
+import { router, Slot, Stack, useSegments } from "expo-router";
 import * as SecureStore from "expo-secure-store";
+import { useEffect } from "react";
 
 export default function RootLayout() {
   const publishableKey = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY!;
@@ -31,6 +32,23 @@ export default function RootLayout() {
   };
 
   const InitialLayout = () => {
+    const { isLoaded, isSignedIn } = useAuth();
+    const segments = useSegments();
+
+    useEffect(() => {
+      if (!isLoaded) return;
+
+      console.log("User: " + isLoaded);
+      const inAuthGroup = segments[0] ==="(auth)"
+
+      if(isSignedIn && !inAuthGroup){
+        router.replace('/home')
+      }else{
+        router.replace('/login')
+
+      }
+
+    }, [isSignedIn]);
     return <Slot />;
   };
   return (
