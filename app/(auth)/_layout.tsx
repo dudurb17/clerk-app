@@ -1,22 +1,6 @@
 import { useAuth } from "@clerk/clerk-expo";
-import { Feather } from "@expo/vector-icons";
 import { Stack } from "expo-router";
-import { Pressable, TouchableOpacity, View } from "react-native";
 
-function LogoutButton() {
-  const { signOut } = useAuth();
-  function logout() {
-    signOut();
-  }
-
-  return (
-    <View>
-      <TouchableOpacity onPress={logout}>
-        <Feather name="log-out" size={24} color="#FFF" />
-      </TouchableOpacity>
-    </View>
-  );
-}
 
 export default function StackPage() {
   const { isSignedIn } = useAuth();
@@ -39,7 +23,6 @@ export default function StackPage() {
         name="profile"
         options={{
           headerTitle: "Profile",
-          headerRight: () => <LogoutButton />,
         }}
         redirect={!isSignedIn}
       />

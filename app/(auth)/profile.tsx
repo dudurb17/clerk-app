@@ -1,9 +1,11 @@
 import { View, Text, StyleSheet, TextInput, Button } from "react-native";
 import React, { useState } from "react";
-import { useUser } from "@clerk/clerk-expo";
+import { useAuth, useUser } from "@clerk/clerk-expo";
 
 export default function Profile() {
   const { user } = useUser();
+  const { signOut } = useAuth();
+
 
   const [firstName, setFirstName] = useState(user?.firstName ?? "");
   const [lastName, setLastName] = useState(user?.lastName ?? "");
@@ -39,6 +41,12 @@ export default function Profile() {
         title="Atualizar perfil"
         color="#121212"
         onPress={handleUpdateProfile}
+      />
+      <View style={{margin:4}}/>
+      <Button
+        title="sair"
+        color="red"
+        onPress={()=>signOut()}
       />
     </View>
   );
