@@ -1,13 +1,25 @@
 import { View, Text, StyleSheet, TextInput, Button, Pressable } from "react-native";
 import React, { useState } from "react";
 import { Link } from "expo-router";
+import { useSignIn } from "@clerk/clerk-expo";
 
 export default function Login() {
+  const {isLoaded, setActive, signIn}=useSignIn()
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleSignin = ()=>{
-
+  const handleSignin = async ()=>{
+    if(!isLoaded) return;
+    try {
+      const signInUser = await signIn.create({
+        identifier:email,
+        password:password
+      })
+      await setActive({session: signInUser.createdSessionId})
+      
+    } catch (error) {
+      console.log(error)
+    }
   }
   return (
     <View style={styles.container}>
